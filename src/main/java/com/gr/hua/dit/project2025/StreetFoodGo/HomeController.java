@@ -34,7 +34,8 @@ public class HomeController {
     }
 
     @GetMapping("/menu")
-    public String menu() { return "menu"; } // points to menu.html
+    public String menu()
+        { return "menu"; } // points to menu.html
 
     @GetMapping("/order-status")
     public String orderStatus()
