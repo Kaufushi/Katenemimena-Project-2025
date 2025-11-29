@@ -37,14 +37,18 @@ public class HomeController {
     public String menu() { return "menu"; } // points to menu.html
 
     @GetMapping("/order-status")
-    public String orderStatus() { return "order_status"; } // points to order_status.html
+    public String orderStatus()
+        { return "order_status"; } // points to order_status.html
 
     @GetMapping("/owner-menu")
-    public String ownerMenu() { return "owner_menu"; }
+    public String ownerMenu()
+        { return "owner_menu"; }
 
     @GetMapping("/owner-orders")
-    public String ownerOrders() { return "owner_orders"; }
+    public String ownerOrders()
+        { return "owner_orders"; }
 
     @GetMapping("/owner-dashboard")
-    public String ownerDashboard() { return "owner_dashboard"; }
+    public String ownerDashboard()
+        { return "owner_dashboard"; }
 }
