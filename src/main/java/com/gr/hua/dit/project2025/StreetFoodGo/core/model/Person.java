@@ -1,22 +1,34 @@
 package com.gr.hua.dit.project2025.StreetFoodGo.core.model;
 
 import java.time.Instant;
+import jakarta.persistence.*;
 
+
+@Entity
+@Table(name = "persons")
 public class Person {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String firstname;
     private String lastname;
-    private Long id;
+    private String username;
+
+    @Enumerated(EnumType.STRING)
     private PersonType type;
+
     private String emailAddress;
     private String mobileNumber;
     private String physicalAddress;
+
     private Instant createdAt;
     private String passwordHash;
 
     public Person() {}
 
-    public Person(Instant createdAt, PersonType type, String physicalAddress, String passwordHash, String mobileNumber, String lastname, Long id, String firstname, String emailAddress) {
+    public Person(Instant createdAt, PersonType type, String physicalAddress, String passwordHash, String mobileNumber, String lastname, Long id, String firstname, String emailAddress,String username) {
         this.createdAt = createdAt;
         this.type = type;
         this.physicalAddress = physicalAddress;
@@ -26,6 +38,16 @@ public class Person {
         this.id = id;
         this.firstname = firstname;
         this.emailAddress = emailAddress;
+        this.username = username;
+    }
+
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPhysicalAddress() {

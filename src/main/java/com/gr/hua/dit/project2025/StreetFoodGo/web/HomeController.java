@@ -1,4 +1,4 @@
-package com.gr.hua.dit.project2025.StreetFoodGo;
+package com.gr.hua.dit.project2025.StreetFoodGo.web;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,15 +18,7 @@ public class HomeController {
         return "home"; // points to home.html in templates folder
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "login"; // points to login.html
-    }
 
-    @GetMapping("/register")
-    public String register() {
-        return "register"; // points to register.html
-    }
 
     @GetMapping("/restaurants")
     public String restaurants() {

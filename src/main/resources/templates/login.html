@@ -165,6 +165,12 @@
         Don’t have an account?
         <a th:href="@{/register}">Create one</a>
     </p>
+
+
+    <p th:if="${error}" style="color:red; text-align:center;">
+        <span th:text="${error}"></span>
+    </p>
+
 </div>
 
 </body>
