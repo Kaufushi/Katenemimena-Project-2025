@@ -4,175 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - StreetFoodGo</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            color: #333;
-        }
-
-        .login-card {
-            background: rgba(255, 255, 255, 0.97);
-            backdrop-filter: blur(10px);
-            padding: 2.5rem;
-            width: 100%;
-            max-width: 420px;
-            border-radius: 20px;
-            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        .logo {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .logo span {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        h2 {
-            text-align: center;
-            font-size: 1.7rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
-            color: #444;
-        }
-
-        .input-group {
-            margin-bottom: 1.2rem;
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 0.95rem;
-            margin-bottom: 0.3rem;
-            font-weight: 500;
-            color: #555;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 0.9rem;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .input-group input:focus {
-            border-color: #ff6b35;
-            outline: none;
-        }
-
-        .btn-login {
-            width: 100%;
-            margin-top: 1rem;
-            padding: 0.9rem;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            color: white;
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
-            transition: 0.3s ease;
-        }
-
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
-        }
-
-        .register-link {
-            text-align: center;
-            margin-top: 1.3rem;
-            font-size: 0.95rem;
-        }
-
-        .register-link a {
-            color: #ff6b35;
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-        .register-link a:hover {
-            text-decoration: underline;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
+    <!-- Relying on the external stylesheet for core layout and theme -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body>
 
-<div class="login-card">
-    <div class="logo">
-        <span>🍜 StreetFoodGo</span>
+<!-- HEADER REMAINS IDENTICAL TO REGISTER PAGE -->
+<header class="navbar">
+    <div class="container">
+        <div class="logo">
+            <span class="logo-icon">🍜</span>
+            <span class="logo-text">StreetFoodGo</span>
+        </div>
+        <nav class="nav-buttons">
+            <!-- CHANGE: Added the 'btn' class back here to match register.html -->
+            <button type="button" th:onclick="|window.location='@{/}'|" class="btn btn-outline">Home</button>
+        </nav>
     </div>
+</header>
 
-    <h2>Welcome Back</h2>
+<!-- MAIN CONTENT AREA, USING THE STYLES AND CLASSES FROM THE REGISTER TEMPLATE -->
+<main class="hero" style="padding-top: 120px;">
+    <div class="hero-content form-box">
 
-    <!-- Login Form -->
-    <form th:action="@{/login}" method="post">
+        <!-- Title matching the Register page inline style -->
+        <h2 style="color:#333; margin-bottom: 1rem;">Welcome Back</h2>
 
-        <div class="input-group">
-            <label for="username">Email or Username</label>
-            <input type="text" id="username" name="username" placeholder="Enter your email" required>
-        </div>
+        <!-- Form structure matching the Register page inline style -->
+        <form th:action="@{/login}" method="post" style="display: flex; flex-direction: column; gap: 1rem; ">
 
-        <div class="input-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="********" required>
-        </div>
+            <!-- Input fields matching the Register page inline style -->
+            <input type="text" name="username" placeholder="Email or Username" required
+                   style="padding: 1rem; border-radius: 10px; border: 1px solid #ddd; font-size: 1.1rem;">
 
-        <button type="submit" class="btn-login">Login</button>
-    </form>
+            <input type="password" name="password" placeholder="Password" required
+                   style="padding: 1rem; border-radius: 10px; border: 1px solid #ddd; font-size: 1.1rem;">
 
-    <p class="register-link">
-        Don’t have an account?
-        <a th:href="@{/register}">Create one</a>
-    </p>
+            <!-- Button using classes that rely on external CSS -->
+            <button class="btn btn-primary" type="submit">Login</button>
 
+        </form>
 
-    <p th:if="${error}" style="color:red; text-align:center;">
-        <span th:text="${error}"></span>
-    </p>
+        <!-- Link text and style matching the Register page template -->
+        <p style="margin-top: 1rem; font-size: 0.9rem;">
+            Don’t have an account?
+            <a th:href="@{/register}" style="color:#ff6b35; font-weight: 600;">Create one</a>
+        </p>
 
-</div>
+    </div>
+</main>
 
 </body>
 </html>
-
