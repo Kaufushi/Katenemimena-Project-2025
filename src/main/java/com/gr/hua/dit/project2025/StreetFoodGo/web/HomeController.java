@@ -20,10 +20,6 @@ public class HomeController {
 
 
 
-    @GetMapping("/restaurants")
-    public String restaurants() {
-        return "restaurants"; // points to restaurants.html
-    }
 
     @GetMapping("/menu")
     public String menu()
