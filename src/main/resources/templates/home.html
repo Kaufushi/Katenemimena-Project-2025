@@ -1,18 +1,20 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StreetFoodGo - Discover Local Street Food</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" th:href="@{/css/style.css}">
-
-
-
 </head>
+
 <body>
+
 <!-- Navigation Header -->
 <header class="navbar">
     <div class="container">
@@ -20,9 +22,26 @@
             <span class="logo-icon">🍜</span>
             <span class="logo-text">StreetFoodGo</span>
         </div>
+
         <nav class="nav-buttons">
-            <button type="button" th:onclick="|window.location='@{/login}'|" class="btn btn-outline">Login</button>
-            <button type="button" th:onclick="|window.location='@{/register}'|" class="btn btn-primary">Register</button>
+
+            <!-- 🔸 If NOT logged in → show Login + Register -->
+            <div sec:authorize="isAnonymous()">
+                <button type="button" th:onclick="|window.location='@{/login}'|" class="btn btn-outline">Login</button>
+                <button type="button" th:onclick="|window.location='@{/register}'|" class="btn btn-primary">Register</button>
+            </div>
+
+            <!-- 🔸 If logged in → show Username + Logout -->
+            <div sec:authorize="isAuthenticated()" style="display: flex; align-items: center; gap: 1rem;">
+                <span style="color:#fff; font-weight:600;">
+                    Logged in as: <span sec:authentication="name"></span>
+                </span>
+
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn btn-outline">Logout</button>
+                </form>
+            </div>
+
         </nav>
     </div>
 </header>
@@ -58,5 +77,6 @@
         </div>
     </div>
 </main>
+
 </body>
 </html>
