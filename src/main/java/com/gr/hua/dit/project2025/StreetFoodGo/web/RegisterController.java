@@ -36,12 +36,10 @@ public class RegisterController {
         Person person = new Person();
         person.setUsername(username);
         person.setEmailAddress(email);
+
         person.setType(type);
 
-        // HASH THE PASSWORD
         person.setPasswordHash(passwordEncoder.encode(password));
-
-        person.setType(PersonType.CUSTOMER);
         person.setCreatedAt(Instant.now());
 
         personRepository.save(person);

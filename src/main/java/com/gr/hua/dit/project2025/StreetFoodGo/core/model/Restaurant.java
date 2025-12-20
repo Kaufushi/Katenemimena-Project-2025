@@ -20,20 +20,26 @@ public class Restaurant {
     private String imageUrl;
     private Long telephone;
     private String email;
-    private Long ownerId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", nullable = false)
+    private Person owner;
 
     public Restaurant() {}
 
-    public Restaurant(String name, String area, String cuisine, String imageUrl, Long telephone, String email ,  Long ownerId) {
+    public Restaurant(String name,
+                      String area,
+                      String cuisine,
+                      String imageUrl,
+                      Long telephone,
+                      String email,
+                      Person owner) {
         this.name = name;
         this.area = area;
         this.cuisine = cuisine;
         this.imageUrl = imageUrl;
         this.telephone = telephone;
         this.email = email;
-        this.ownerId = ownerId;
+        this.owner = owner;
     }
-
-
-
 }

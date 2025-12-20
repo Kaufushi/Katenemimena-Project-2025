@@ -28,10 +28,6 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthResponseDto registerCustomer(CreateCustomerRequestDto request) {
 
-        if (personRepository.existsByUsername(request.username())) {
-            throw new IllegalArgumentException("Username already exists");
-        }
-
         if (personRepository.existsByEmailAddress(request.email())) {
             throw new IllegalArgumentException("Email already exists");
         }
@@ -43,8 +39,7 @@ public class AuthServiceImpl implements AuthService {
         person.setEmailAddress(request.email());
         person.setPasswordHash(passwordEncoder.encode(request.password()));
 
-        // Default: CUSTOMER
-        person.setType(PersonType.CUSTOMER);
+
 
         personRepository.save(person);
 
@@ -61,16 +56,17 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AuthResponseDto login(String username, String password) {
+    public AuthResponseDto login(String email, String password) {
 
-        Person person = personRepository
-                .findByUsernameOrEmail(username, username)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        Person person = personRepository.findByEmailAddress(email);
+
+        if (person == null) {
+            throw new IllegalArgumentException("User not found");
+        }
 
         if (!passwordEncoder.matches(password, person.getPasswordHash())) {
             throw new IllegalArgumentException("Invalid credentials");
         }
-
 
         String token = jwtService.issue(
                 person.getUsername(),
