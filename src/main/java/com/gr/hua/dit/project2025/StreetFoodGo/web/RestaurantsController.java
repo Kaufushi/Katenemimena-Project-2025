@@ -59,4 +59,9 @@ public class RestaurantsController {
 
         return "restaurants";
     }
+    @GetMapping("/restaurants/new")
+    public String showCreateRestaurantForm() {
+        return "newRestaurant";
+    }
+
 }

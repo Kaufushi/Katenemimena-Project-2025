@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,23 +10,52 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/restaurants.css}">
+    <link rel="stylesheet" th:href="@{/css/restaurant-form.css}">
 
 </head>
-<body>
 
+<body>
 
 <header class="navbar">
     <div class="container">
-        <div class="logo">🍜 StreetFoodGo</div>
+        <div class="logo">
+            <a th:href="@{/}" style="text-decoration:none; color:inherit;">
+                🍜 StreetFoodGo
+            </a>
+        </div>
+
         <div>
-            <a th:href="@{/login}" class="btn btn-outline">Login</a>
+            <!-- LOGIN όταν anonymous -->
+            <a sec:authorize="isAnonymous()"
+               th:href="@{/login}"
+               class="btn btn-outline">
+                Login
+            </a>
+
+            <!-- LOGOUT όταν logged in -->
+            <form sec:authorize="isAuthenticated()"
+                  th:action="@{/logout}"
+                  method="post"
+                  style="display:inline;">
+                <button type="submit" class="btn btn-outline">
+                    Logout
+                </button>
+            </form>
         </div>
     </div>
 </header>
 
+<!-- OWNER BUTTON -->
+<div class="owner-actions"
+     sec:authorize="hasRole('OWNER')"
+     style="text-align:center; margin: 1rem;">
+    <a th:href="@{/restaurants/new}" class="btn btn-primary">
+        ➕ Add Restaurant
+    </a>
+</div>
+
 <h1 class="page-title">Discover Restaurants</h1>
 
-<!-- Filters -->
 <form class="filters" th:action="@{/restaurants}" method="get">
     <input type="text" name="search" placeholder="Search by name..." th:value="${search}">
 
@@ -50,7 +80,6 @@
     <button class="btn" type="submit">Filter</button>
 </form>
 
-<!-- Restaurant Cards -->
 <div class="restaurant-grid">
     <div class="card" th:each="r : ${restaurants}">
         <img th:src="${r.imageUrl}" alt="Restaurant Image">
@@ -64,7 +93,9 @@
                 🍽️ <span th:text="${r.cuisine}">Cuisine</span>
             </div>
 
-            <a th:href="@{/restaurants/{id}(id=${r.id})}" class="btn">View Menu</a>
+            <a th:href="@{/restaurants/{id}(id=${r.id})}" class="btn">
+                View Menu
+            </a>
         </div>
     </div>
 </div>

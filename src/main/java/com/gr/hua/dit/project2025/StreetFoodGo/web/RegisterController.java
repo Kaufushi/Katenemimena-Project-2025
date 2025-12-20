@@ -30,16 +30,16 @@ public class RegisterController {
     public String register(
             @RequestParam String email,
             @RequestParam String username,
-            @RequestParam String password
+            @RequestParam String password,
+            @RequestParam PersonType type
     ) {
         Person person = new Person();
         person.setUsername(username);
         person.setEmailAddress(email);
 
-        // HASH THE PASSWORD
-        person.setPasswordHash(passwordEncoder.encode(password));
+        person.setType(type);
 
-        person.setType(PersonType.CUSTOMER);
+        person.setPasswordHash(passwordEncoder.encode(password));
         person.setCreatedAt(Instant.now());
 
         personRepository.save(person);

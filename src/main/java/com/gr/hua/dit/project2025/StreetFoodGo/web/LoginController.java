@@ -10,15 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Controller
 public class LoginController {
 
-    private final PersonRepository personRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
-
-    public LoginController(PersonRepository personRepository,
-                           BCryptPasswordEncoder passwordEncoder) {
-        this.personRepository = personRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
-
     @GetMapping("/login")
     public String showLoginForm() {
         return "login";   // loads login.html
