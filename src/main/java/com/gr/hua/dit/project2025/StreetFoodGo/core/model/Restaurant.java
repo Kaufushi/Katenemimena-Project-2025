@@ -1,7 +1,11 @@
 package com.gr.hua.dit.project2025.StreetFoodGo.core.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "restaurants")
 public class Restaurant {
@@ -28,24 +32,6 @@ public class Restaurant {
         this.email = email;
     }
 
-    // Getters / setters
 
 
-    public Long getId() { return id; }
-    public String getName() { return name; }
-    public String getArea() { return area; }
-    public String getCuisine() { return cuisine; }
-    public String getImageUrl() { return imageUrl; }
-    public Long getTelephone() {
-        return telephone;
-    }
-    public String getEmail() { return email; }
-
-    public void setId(Long id) { this.id = id; }
-    public void setName(String name) { this.name = name; }
-    public void setArea(String area) { this.area = area; }
-    public void setCuisine(String cuisine) { this.cuisine = cuisine; }
-    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
-    public void setTelephone(Long telephone) { this.telephone = telephone; }
-    public void setEmail(String email) { this.email = email; }
 }

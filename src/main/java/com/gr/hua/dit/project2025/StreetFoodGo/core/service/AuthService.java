@@ -1,14 +1,14 @@
 package com.gr.hua.dit.project2025.StreetFoodGo.core.service;
 
-import com.gr.hua.dit.project2025.StreetFoodGo.core.service.model.AuthResponse;
-import com.gr.hua.dit.project2025.StreetFoodGo.core.service.model.CreateCustomerRequest;
+import com.gr.hua.dit.project2025.StreetFoodGo.core.service.model.AuthResponseDto;
+import com.gr.hua.dit.project2025.StreetFoodGo.core.service.model.CreateCustomerRequestDto;
 
 public interface AuthService {
 
-    AuthResponse registerCustomer(CreateCustomerRequest request);
+    AuthResponseDto registerCustomer(CreateCustomerRequestDto request);
 
 
 
-    AuthResponse login(String username, String password);
+    AuthResponseDto login(String username, String password);
 
 }
