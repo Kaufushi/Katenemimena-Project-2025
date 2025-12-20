@@ -23,13 +23,16 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain appChain(HttpSecurity http) throws Exception {
 
+
+
         http
-                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/", "/restaurants", "/login", "/register",
                                 "/css/**", "/js/**", "/api/**"
                         ).permitAll()
+                        .requestMatchers("/restaurants/new","/restaurants/save")
+                        .hasRole("OWNER")
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(personDetailsService)

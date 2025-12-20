@@ -2,10 +2,12 @@ package com.gr.hua.dit.project2025.StreetFoodGo.security;
 
 import com.gr.hua.dit.project2025.StreetFoodGo.core.model.Person;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public class PersonDetails implements UserDetails {
 
@@ -15,9 +17,15 @@ public class PersonDetails implements UserDetails {
         this.person = person;
     }
 
+    public Person getPerson() {
+        return person;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+        return List.of(
+                new SimpleGrantedAuthority("ROLE_" + person.getType().name())
+        );
     }
 
     @Override
@@ -27,8 +35,9 @@ public class PersonDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return person.getEmailAddress();   // LOGIN BY EMAIL
+        return person.getUsername();
     }
+
 
     @Override public boolean isAccountNonExpired() { return true; }
     @Override public boolean isAccountNonLocked() { return true; }

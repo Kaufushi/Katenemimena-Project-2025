@@ -20,16 +20,18 @@ public class Restaurant {
     private String imageUrl;
     private Long telephone;
     private String email;
+    private Long ownerId;
 
     public Restaurant() {}
 
-    public Restaurant(String name, String area, String cuisine, String imageUrl, Long telephone, String email) {
+    public Restaurant(String name, String area, String cuisine, String imageUrl, Long telephone, String email ,  Long ownerId) {
         this.name = name;
         this.area = area;
         this.cuisine = cuisine;
         this.imageUrl = imageUrl;
         this.telephone = telephone;
         this.email = email;
+        this.ownerId = ownerId;
     }
 
 
