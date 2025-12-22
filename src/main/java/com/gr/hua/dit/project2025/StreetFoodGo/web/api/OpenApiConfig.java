@@ -16,7 +16,7 @@ public class OpenApiConfig {
                         .version("1.0")
                         .description(
                                 "REST API για αναζήτηση εστιατορίων\n" +
-                                        "στην εφαρμογή StreetFoodGo"
+                                        "στην εφαρμογή StreetFoodGo!"
                         )
                 );
     }
