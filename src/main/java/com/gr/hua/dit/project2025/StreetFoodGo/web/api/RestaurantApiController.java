@@ -30,14 +30,14 @@ public class RestaurantApiController {
     @Operation(
             summary = "Αναζήτηση εστιατορίων",
             description = """
-                            Επιστρέφει λίστα εστιατορίων.
+                            Επιστρέφει μία λίστα εστιατορίων.
                             Υποστηρίζει προαιρετικά φίλτρα περιοχής και κουζίνας.
                           """
     )
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Επιτυχής επιστροφή λίστας εστιατορίων"
+                    description = "Επιτυχής επιστροφή της λίστας εστιατορίων"
             )
     })
     @GetMapping
@@ -45,7 +45,7 @@ public class RestaurantApiController {
 
             @Parameter(
                     description = "Περιοχή στην οποία βρίσκεται το εστιατόριο",
-                    example = "Αθήνα"
+                    example = "Θεσσαλονίκη"
             )
             @RequestParam(required = false)
             String area,
