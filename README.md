@@ -6,21 +6,21 @@ StreetFoodGo είναι μία Spring Boot εφαρμογή που παρέχε�
 
 🚀 Technologies
 
-Java 21
+- Java 21
 
-Spring Boot
+- Spring Boot
 
-Spring Web MVC
+- Spring Web MVC
 
-Spring Data JPA
+- Spring Data JPA
 
-Spring Security
+- Spring Security
 
-Thymeleaf
+- Thymeleaf
 
-OpenAPI 3
+- OpenAPI 3
 
-Swagger UI
+- Swagger UI
 
 📘 REST API Documentation
 
@@ -36,49 +36,44 @@ Swagger UI
 http://localhost:8080/swagger-ui/index.html
 
 
-Μέσω του Swagger UI μπορείς να:
+Μέσω του Swagger UI μπορούμε να:
 
-δεις όλα τα REST endpoints
+- Δούμε όλα τα REST endpoints,
 
-εξετάσεις query parameters
+- Εξετάσουμε query parameters,
 
-δεις τα JSON responses
+- Δούμε τα JSON responses και
 
-εκτελέσεις δοκιμαστικές κλήσεις (Try it out)
+- Εκτελέσουμε δοκιμαστικές κλήσεις
 
 🔌 API Endpoints
+
 GET /api/restaurants
 
 Επιστρέφει λίστα εστιατορίων σε μορφή JSON.
 
-Query Parameters (optional)
-Parameter	Type	Description
-area	String	Περιοχή στην οποία βρίσκεται το εστιατόριο
-cuisine	String	Τύπος κουζίνας του εστιατορίου
-Example Request
+
+Example Request: 
 GET /api/restaurants?area=Αθήνα&cuisine=Ιταλικό
 
 📄 Response
 
-Status Code: 200 OK
+- Status Code: 200 OK
 
-Body: Λίστα αντικειμένων RestaurantDto σε μορφή JSON
+- Body: Λίστα αντικειμένων RestaurantDto σε μορφή JSON
 
 ⚙️ Configuration
 
 Η γενική ρύθμιση του API (τίτλος, έκδοση, περιγραφή) γίνεται στην κλάση:
-
 OpenApiConfig
 
 
-Η τεκμηρίωση των endpoints υλοποιείται στον controller:
-
+Η τεκμηρίωση των endpoints υλοποιείται στον controller
 RestaurantApiController
-
-
 μέσω OpenAPI annotations (@Operation, @Parameter, @ApiResponse).
 
 ▶️ Run the Application
+
 mvn spring-boot:run
 
 
@@ -86,11 +81,11 @@ mvn spring-boot:run
 
 🧪 Development Notes
 
-Το REST API είναι ανεξάρτητο από τα MVC controllers
+- Το REST API είναι ανεξάρτητο από τα MVC controllers
 
-Η τεκμηρίωση ενημερώνεται αυτόματα με κάθε αλλαγή στον controller
+- Η τεκμηρίωση ενημερώνεται αυτόματα με κάθε αλλαγή στον controller
 
-Το Swagger UI χρησιμοποιείται ως εργαλείο δοκιμών κατά την ανάπτυξη
+- Το Swagger UI χρησιμοποιείται ως εργαλείο δοκιμών κατά την ανάπτυξη
 
 🎓 Academic Context
 
