@@ -41,5 +41,6 @@ public class Restaurant {
         this.telephone = telephone;
         this.email = email;
         this.owner = owner;
+
     }
 }

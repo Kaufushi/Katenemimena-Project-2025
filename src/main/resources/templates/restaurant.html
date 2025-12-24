@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${restaurant.name}">Restaurant</title>
+</head>
+<body>
+
+<h1 th:text="${restaurant.name}">Restaurant Name</h1>
+
+<p>
+    📍 <span th:text="${restaurant.area}"></span>
+</p>
+
+<p>
+    🍽️ <span th:text="${restaurant.cuisine}"></span>
+</p>
+
+<img th:src="${restaurant.imageUrl}" style="max-width:400px">
+
+<hr>
+
+<h2>Menu (coming soon)</h2>
+
+</body>
+</html>
