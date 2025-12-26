@@ -1,26 +1,84 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title th:text="${restaurant.name}">Restaurant</title>
+    <link rel="stylesheet" th:href="@{/css/singleRestaurant.css}">
 </head>
+
 <body>
 
-<h1 th:text="${restaurant.name}">Restaurant Name</h1>
+<!-- HEADER -->
+<header class="restaurant-header">
+    <div class="header-inner">
+        <span class="logo-icon">🍜</span>
+        <h1 class="logo">StreetFoodGo</h1>
+    </div>
+</header>
 
-<p>
-    📍 <span th:text="${restaurant.area}"></span>
-</p>
+<h2 class="restaurant-title" th:text="${restaurant.name}">
+    Restaurant Name
+</h2>
 
-<p>
-    🍽️ <span th:text="${restaurant.cuisine}"></span>
-</p>
+<main class="restaurant-container">
 
-<img th:src="${restaurant.imageUrl}" style="max-width:400px">
+    <!-- RESTAURANT INFO -->
+    <section class="restaurant-card">
+        <div class="restaurant-info">
+            <p class="restaurant-meta">
+                📍 <span th:text="${restaurant.area}"></span>
+            </p>
 
-<hr>
+            <p class="restaurant-meta">
+                🍽️ <span th:text="${restaurant.cuisine}"></span>
+            </p>
 
-<h2>Menu (coming soon)</h2>
+            <p class="restaurant-status"
+               th:text="${restaurant.open ? 'Open now' : 'Closed'}"
+               th:classappend="${restaurant.open ? 'open' : 'closed'}">
+            </p>
+
+            <!-- OWNER ONLY -->
+            <div sec:authorize="hasRole('OWNER')" th:if="${isOwner}">
+                <a th:href="@{/owner/restaurants/{id}/manage(id=${restaurant.id})}"
+                   class="manage-btn">
+                    ⚙️ Manage Restaurant
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- MENU -->
+    <section class="menu-section">
+        <h3 class="menu-title">Menu</h3>
+
+        <div th:if="${menuItems.isEmpty()}">
+            <p class="menu-placeholder">No items available 🍔</p>
+        </div>
+
+        <div class="menu-grid">
+            <div class="menu-item"
+                 th:each="item : ${menuItems}">
+
+                <div class="menu-item-header">
+                    <h4 th:text="${item.name}">Item Name</h4>
+                    <span class="price">€<span th:text="${item.price}"></span></span>
+                </div>
+
+                <p class="menu-desc"
+                   th:text="${item.description}">
+                </p>
+
+                <span class="availability"
+                      th:text="${item.available ? 'Available' : 'Unavailable'}"
+                      th:classappend="${item.available ? 'available' : 'unavailable'}">
+                </span>
+            </div>
+        </div>
+    </section>
+
+</main>
 
 </body>
 </html>

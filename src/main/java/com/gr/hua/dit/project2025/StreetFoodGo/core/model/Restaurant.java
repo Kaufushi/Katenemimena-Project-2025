@@ -21,6 +21,10 @@ public class Restaurant {
     private Long telephone;
     private String email;
 
+    @Column(name = "OPEN")
+    private Boolean open;
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
     private Person owner;
@@ -41,6 +45,6 @@ public class Restaurant {
         this.telephone = telephone;
         this.email = email;
         this.owner = owner;
-
+        this.open = false;
     }
 }

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Restaurant</title>
+    <link rel="stylesheet" th:href="@{/css/manageRestaurant.css}">
+</head>
+
+<body>
+
+<header class="manage-header">
+    <h1 th:text="${restaurant.name}">Manage Restaurant</h1>
+</header>
+
+<main class="manage-container">
+
+    <!-- RESTAURANT INFO -->
+    <section class="card">
+        <p>📍 <span th:text="${restaurant.area}"></span></p>
+        <p>🍽️ <span th:text="${restaurant.cuisine}"></span></p>
+        <p>Status:
+            <strong th:text="${restaurant.open ? 'OPEN' : 'CLOSED'}"></strong>
+        </p>
+    </section>
+
+    <!-- OPEN / CLOSE -->
+    <section class="card">
+        <form th:action="@{/owner/restaurants/{id}/toggle(id=${restaurant.id})}" method="post">
+            <button class="btn" type="submit">
+                <strong th:text="${restaurant.open ? 'OPEN' : 'CLOSED'}"></strong>
+            </button>
+        </form>
+    </section>
+
+    <!-- ADD MENU ITEM -->
+    <section class="card">
+        <h3>Add Menu Item</h3>
+
+        <form th:action="@{/owner/restaurants/{id}/menu/add(id=${restaurant.id})}"
+              method="post"
+              class="form">
+
+            <input type="text" name="name" placeholder="Item name" required>
+
+            <input type="text" name="description" placeholder="Description">
+
+            <input type="number" step="0.01" name="price" placeholder="Price (€)" required>
+
+            <input type="text" name="imageUrl" placeholder="Image URL (optional)">
+
+            <label>
+                <input type="checkbox" name="available" checked>
+                Available
+            </label>
+
+            <button type="submit" class="btn">Add Item</button>
+        </form>
+    </section>
+
+    <!-- MENU ITEMS -->
+    <section class="card">
+        <h3>Menu Items</h3>
+
+        <p th:if="${menuItems.isEmpty()}">No menu items yet.</p>
+
+        <ul class="menu-list">
+            <li th:each="item : ${menuItems}">
+                <div>
+                    <strong th:text="${item.name}"></strong>
+                    <span th:text="${item.available ? ' (Available)' : ' (Unavailable)'}"></span>
+                    <p th:text="${item.description}"></p>
+                    <p>€<span th:text="${item.price}"></span></p>
+                </div>
+
+                <div style="display:flex; gap:0.5rem;">
+                    <!-- TOGGLE AVAILABILITY -->
+                    <form th:action="@{/owner/menu/{id}/toggle(id=${item.id})}" method="post">
+                        <button class="btn" type="submit">
+                            Toggle
+                        </button>
+                    </form>
+
+                    <!-- DELETE -->
+                    <form th:action="@{/owner/menu/{id}/delete(id=${item.id})}" method="post">
+                        <button class="danger-btn" type="submit">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </section>
+
+    <!-- DELETE RESTAURANT -->
+    <section class="card danger">
+        <h3>Danger Zone</h3>
+
+        <form th:action="@{/owner/restaurants/{id}/delete(id=${restaurant.id})}" method="post">
+            <button class="danger-btn" type="submit">
+                Delete Restaurant
+            </button>
+        </form>
+    </section>
+
+</main>
+
+</body>
+</html>

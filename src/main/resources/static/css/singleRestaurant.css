@@ -1,0 +1,141 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f7f7f7;
+    margin: 0;
+    color: #333;
+}
+
+/* HEADER */
+.restaurant-header {
+    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    padding: 1.5rem;
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: white;
+}
+
+.logo {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.logo-icon {
+    font-size: 2rem;
+}
+
+.restaurant-title {
+    text-align: center;
+    margin: 2rem 0 1rem;
+    font-size: 2.4rem;
+    font-weight: 700;
+}
+
+/* LAYOUT */
+.restaurant-container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 0 1.5rem 4rem;
+}
+
+/* CARD */
+.restaurant-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.restaurant-meta {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.restaurant-status {
+    font-weight: 600;
+    margin: 1rem 0;
+}
+
+.restaurant-status.open {
+    color: #27ae60;
+}
+
+.restaurant-status.closed {
+    color: #c0392b;
+}
+
+.manage-btn {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.7rem 1.6rem;
+    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+}
+
+/* MENU */
+.menu-section {
+    margin-top: 3rem;
+}
+
+.menu-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.menu-placeholder {
+    color: #777;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+
+.menu-item {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 18px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    transition: 0.3s ease;
+}
+
+.menu-item:hover {
+    transform: translateY(-4px);
+}
+
+.menu-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price {
+    font-weight: 700;
+    color: #ff6b35;
+}
+
+.menu-desc {
+    margin: 0.8rem 0;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.availability {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.availability.available {
+    color: #27ae60;
+}
+
+.availability.unavailable {
+    color: #c0392b;
+}
