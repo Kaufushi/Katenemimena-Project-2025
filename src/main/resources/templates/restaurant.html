@@ -12,8 +12,32 @@
 <!-- HEADER -->
 <header class="restaurant-header">
     <div class="header-inner">
-        <span class="logo-icon">🍜</span>
-        <h1 class="logo">StreetFoodGo</h1>
+        <div class="header-left">
+            <span class="logo-icon">🍜</span>
+            <a th:href="@{/}" class="logo" style="text-decoration:none; color:inherit;">
+                StreetFoodGo
+            </a>
+        </div>
+
+        <div class="header-right">
+
+            <!-- LOGIN (anonymous) -->
+            <a sec:authorize="isAnonymous()"
+               th:href="@{/login}"
+               class="header-btn">
+                Login
+            </a>
+
+            <!-- LOGOUT (authenticated) -->
+            <form sec:authorize="isAuthenticated()"
+                  th:action="@{/logout}"
+                  method="post">
+                <button type="submit" class="header-btn logout-btn">
+                    Logout
+                </button>
+            </form>
+
+        </div>
     </div>
 </header>
 
@@ -49,7 +73,7 @@
         </div>
     </section>
 
-    <!-- MENU -->
+
     <section class="menu-section">
         <h3 class="menu-title">Menu</h3>
 
@@ -63,7 +87,9 @@
 
                 <div class="menu-item-header">
                     <h4 th:text="${item.name}">Item Name</h4>
-                    <span class="price">€<span th:text="${item.price}"></span></span>
+                    <span class="price">
+                    €<span th:text="${item.price}"></span>
+                </span>
                 </div>
 
                 <p class="menu-desc"
@@ -73,12 +99,139 @@
                 <span class="availability"
                       th:text="${item.available ? 'Available' : 'Unavailable'}"
                       th:classappend="${item.available ? 'available' : 'unavailable'}">
-                </span>
+            </span>
+
+                <!-- ADD TO CART -->
+                <div class="menu-actions">
+                    <button class="add-btn"
+                            th:disabled="${!item.available}"
+                            th:attr="onclick=|addToCart('${item.name}', ${item.price})|">
+                        ➕ Add
+                    </button>
+                </div>
+
             </div>
         </div>
     </section>
 
+    <div class="cart">
+        <h3>🛒 Cart</h3>
+
+        <div id="cart-items">
+            <p>No items yet</p>
+        </div>
+
+        <div class="cart-total">
+            Total: <span id="cart-total">€0.00</span>
+        </div>
+
+        <!-- CHECKOUT -->
+        <div sec:authorize="isAuthenticated()">
+            <button class="checkout-btn" onclick="checkout()">
+                Checkout
+            </button>
+        </div>
+
+
+        <div class="login-to-checkout" sec:authorize="isAnonymous()">
+            <p>Login to complete your order</p>
+            <a th:href="@{/login}" class="login-btn">Login</a>
+        </div>
+
+    </div>
+
+
+
 </main>
+
+<script>
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    function saveCart() {
+        localStorage.setItem("cart", JSON.stringify(cart));
+    }
+
+
+    function addToCart(name, price) {
+        const existing = cart.find(i => i.name === name);
+
+        if (existing) {
+            existing.quantity++;
+        } else {
+            cart.push({ name, price, quantity: 1 });
+        }
+
+        saveCart();
+        renderCart();
+    }
+
+    function removeFromCart(name) {
+        const index = cart.findIndex(i => i.name === name);
+
+        if (index === -1) return;
+
+        if (cart[index].quantity > 1) {
+            cart[index].quantity--;
+        } else {
+            cart.splice(index, 1);
+        }
+
+        saveCart();
+        renderCart();
+    }
+
+
+    function renderCart() {
+        const cartItemsDiv = document.getElementById("cart-items");
+        const cartTotalSpan = document.getElementById("cart-total");
+
+        cartItemsDiv.innerHTML = "";
+
+        if (cart.length === 0) {
+            cartItemsDiv.innerHTML = "<p>No items yet</p>";
+            cartTotalSpan.innerText = "0.00";
+            return;
+        }
+
+        let total = 0;
+
+        cart.forEach(item => {
+            total += item.price * item.quantity;
+
+            cartItemsDiv.innerHTML += `
+                <div class="cart-item">
+                    <span class="cart-name">${item.name}</span>
+
+                    <div class="cart-controls">
+                        <button onclick="removeFromCart('${item.name}')">−</button>
+                        <span class="cart-qty">${item.quantity}</span>
+                        <button onclick="addToCart('${item.name}', ${item.price})">+</button>
+                    </div>
+
+                    <span class="cart-price">
+                        €${(item.price * item.quantity).toFixed(2)}
+                    </span>
+                </div>
+            `;
+        });
+
+        cartTotalSpan.innerText = total.toFixed(2);
+    }
+
+
+    function checkout() {
+
+        cart = [];
+        saveCart();
+        renderCart();
+    }
+
+
+    renderCart();
+</script>
+
+
 
 </body>
 </html>
