@@ -25,3 +25,7 @@ app:
     issuer: streetfoodgo
     audience: streetfoodgo-client
     ttl-minutes: 1440
+
+notification:
+  service:
+    base-url: http://localhost:8080/api/notifications/email
