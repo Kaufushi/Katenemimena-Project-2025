@@ -6,13 +6,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - StreetFoodGo</title>
-    <!-- Relying on the external stylesheet for core layout and theme -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body>
 
-<!-- HEADER REMAINS IDENTICAL TO REGISTER PAGE -->
 <header class="navbar">
     <div class="container">
         <div class="logo">
@@ -20,35 +18,28 @@
             <span class="logo-text">StreetFoodGo</span>
         </div>
         <nav class="nav-buttons">
-            <!-- CHANGE: Added the 'btn' class back here to match register.html -->
             <button type="button" th:onclick="|window.location='@{/}'|" class="btn btn-outline">Home</button>
         </nav>
     </div>
 </header>
 
-<!-- MAIN CONTENT AREA, USING THE STYLES AND CLASSES FROM THE REGISTER TEMPLATE -->
 <main class="hero" style="padding-top: 120px;">
     <div class="hero-content form-box">
 
-        <!-- Title matching the Register page inline style -->
         <h2 style="color:#333; margin-bottom: 1rem;">Welcome Back</h2>
 
-        <!-- Form structure matching the Register page inline style -->
         <form th:action="@{/login}" method="post" style="display: flex; flex-direction: column; gap: 1rem; ">
 
-            <!-- Input fields matching the Register page inline style -->
             <input type="text" name="username" placeholder="Email" required
                    style="padding: 1rem; border-radius: 10px; border: 1px solid #ddd; font-size: 1.1rem;">
 
             <input type="password" name="password" placeholder="Password" required
                    style="padding: 1rem; border-radius: 10px; border: 1px solid #ddd; font-size: 1.1rem;">
 
-            <!-- Button using classes that rely on external CSS -->
             <button class="btn btn-primary" type="submit">Login</button>
 
         </form>
 
-        <!-- Link text and style matching the Register page template -->
         <p style="margin-top: 1rem; font-size: 0.9rem;">
             Don’t have an account?
             <a th:href="@{/register}" style="color:#ff6b35; font-weight: 600;">Create one</a>
