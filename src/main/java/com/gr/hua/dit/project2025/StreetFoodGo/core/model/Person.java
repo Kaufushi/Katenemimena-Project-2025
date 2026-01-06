@@ -3,6 +3,7 @@ package com.gr.hua.dit.project2025.StreetFoodGo.core.model;
 import java.time.Instant;
 import jakarta.persistence.*;
 
+
 @Entity
 @Table(name = "persons")
 public class Person {
@@ -39,6 +40,7 @@ public class Person {
         this.emailAddress = emailAddress;
         this.username = username;
     }
+
 
     public String getUsername() {
         return username;

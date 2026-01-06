@@ -1,55 +1,62 @@
 package com.gr.hua.dit.project2025.StreetFoodGo.config;
 
+import com.gr.hua.dit.project2025.StreetFoodGo.security.PersonDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
+    private final PersonDetailsService personDetailsService;
+
+    public SecurityConfig(PersonDetailsService personDetailsService) {
+        this.personDetailsService = personDetailsService;
+    }
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain appChain(HttpSecurity http) throws Exception {
 
         http
                 .authorizeHttpRequests(auth -> auth
+
+                        // 🔓 PUBLIC PAGES
                         .requestMatchers(
+                                "/",
                                 "/login",
+                                "/register",
+                                "/restaurants",
+                                "/restaurants/**",
                                 "/css/**",
                                 "/js/**",
-                                "/images/**",
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**"
+                                "/images/**"
                         ).permitAll()
+
+
+                        .requestMatchers(
+                                "/restaurants/new",
+                                "/restaurants/save",
+                                "/restaurants/*/edit",
+                                "/restaurants/*/delete"
+                        ).hasRole("OWNER")
+
+
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .loginProcessingUrl("/login")
-                        .usernameParameter("email")
-                        .defaultSuccessUrl("/restaurants", true)
-                        .failureUrl("/login?error")
+                        .defaultSuccessUrl("/", true)
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/login?logout")
+                        .logoutSuccessUrl("/")
+                        .permitAll()
                 );
 
         return http.build();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
 }
