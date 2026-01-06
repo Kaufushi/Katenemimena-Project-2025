@@ -17,18 +17,12 @@ public class PersonDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String usernameOrEmail)
-            throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Person person = personRepository.findByEmailAddress(email);
 
-        // login με username:
-        Person person = personRepository.findByUsername(usernameOrEmail)
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found: " + usernameOrEmail));
-
-        // Login με email:
-        // Person person = personRepository.findByEmailAddress(usernameOrEmail)
-        //        .orElseThrow(() ->
-        //                new UsernameNotFoundException("User not found: " + usernameOrEmail));
+        if (person == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
 
         return new PersonDetails(person);
     }

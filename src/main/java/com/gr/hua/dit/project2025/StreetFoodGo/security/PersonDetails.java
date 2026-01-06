@@ -16,9 +16,15 @@ public class PersonDetails implements UserDetails {
         this.person = person;
     }
 
+    public Person getPerson() {
+        return person;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + person.getType().name()));
+        return List.of(
+                new SimpleGrantedAuthority("ROLE_" + person.getType().name())
+        );
     }
 
     @Override
@@ -28,23 +34,12 @@ public class PersonDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return person.getUsername();
+        // Αν login γίνεται με email, μπορείς να επιστρέψεις emailAddress
+        return person.getEmailAddress();
     }
 
-    @Override
-    public boolean isAccountNonExpired() { return true; }
-
-    @Override
-    public boolean isAccountNonLocked() { return true; }
-
-    @Override
-    public boolean isCredentialsNonExpired() { return true; }
-
-    @Override
-    public boolean isEnabled() { return true; }
-
-    // 🔥 αυτό διορθώνει το error στο RestaurantsController
-    public Person getPerson() {
-        return this.person;
-    }
+    @Override public boolean isAccountNonExpired() { return true; }
+    @Override public boolean isAccountNonLocked() { return true; }
+    @Override public boolean isCredentialsNonExpired() { return true; }
+    @Override public boolean isEnabled() { return true; }
 }
