@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout - StreetFoodGo</title>
+    <link rel="stylesheet" th:href="@{/css/checkout.css}">
+</head>
+
+<body>
+
+<header class="checkout-header">
+    <div class="header-inner">
+        <span class="logo-icon">🍜</span>
+        <a th:href="@{/}" class="logo">StreetFoodGo</a>
+
+        <form th:action="@{/logout}" method="post">
+            <button class="btn-secondary">Logout</button>
+        </form>
+    </div>
+</header>
+
+<main class="checkout-container">
+
+    <h1>Checkout</h1>
+
+    <!-- USER INFO -->
+    <div class="checkout-card">
+        <h3>👤 Your Details</h3>
+        <p>
+            Logged in as:
+            <strong sec:authentication="name"></strong>
+        </p>
+    </div>
+
+    <!-- ADDRESS -->
+    <div class="checkout-card">
+        <h3>📍 Delivery Address</h3>
+
+        <form th:action="@{/orders/place}" method="post">
+
+            <div class="form-group">
+                <label>Street</label>
+                <input type="text" name="street" required>
+            </div>
+
+            <div class="form-group">
+                <label>City</label>
+                <input type="text" name="city" required>
+            </div>
+
+            <div class="form-group">
+                <label>Notes</label>
+                <textarea name="notes"
+                          placeholder="Ring bell, leave at door..."></textarea>
+            </div>
+
+            <input type="hidden" name="cartData" id="cartData">
+
+            <div class="checkout-actions">
+                <a th:href="@{/restaurants}" class="btn-secondary">Back</a>
+                <button type="submit" class="btn-primary">Place Order</button>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- ORDER SUMMARY -->
+    <div class="checkout-card">
+        <h3>🛒 Order Summary</h3>
+
+        <div id="checkout-cart"></div>
+
+        <div class="checkout-total">
+            <span>Total</span>
+            <span>€<span id="checkout-total">0.00</span></span>
+        </div>
+    </div>
+
+</main>
+
+<script>
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    const cartDiv = document.getElementById("checkout-cart");
+    const totalSpan = document.getElementById("checkout-total");
+    const cartInput = document.getElementById("cartData");
+
+    let total = 0;
+
+    cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+
+        cartDiv.innerHTML += `
+            <div class="checkout-item">
+                <span>${item.name} x ${item.quantity}</span>
+                <span>€${itemTotal.toFixed(2)}</span>
+            </div>
+        `;
+    });
+
+    totalSpan.innerText = total.toFixed(2);
+    cartInput.value = JSON.stringify(cart);
+</script>
+
+</body>
+</html>

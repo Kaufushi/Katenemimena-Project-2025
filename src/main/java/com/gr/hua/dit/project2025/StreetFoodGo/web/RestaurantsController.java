@@ -123,4 +123,11 @@ public class RestaurantsController {
         return "restaurant";
     }
 
+    @GetMapping("/restaurants/{id}/checkout")
+    public String viewCheckout(@PathVariable Long id, Model model) {
+        model.addAttribute("restaurantId", id);
+        return "checkout";
+    }
+
+
 }

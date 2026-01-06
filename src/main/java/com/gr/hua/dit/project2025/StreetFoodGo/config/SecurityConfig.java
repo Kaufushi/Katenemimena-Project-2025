@@ -43,6 +43,7 @@ public class SecurityConfig {
                                 "/restaurants/*/delete"
                         ).hasRole("OWNER")
 
+                        .requestMatchers("/restaurants/*/checkout").authenticated()
 
                         .anyRequest().authenticated()
                 )

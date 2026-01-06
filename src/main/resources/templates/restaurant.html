@@ -221,11 +221,17 @@
 
 
     function checkout() {
+        if (cart.length === 0) {
+            alert("Your cart is empty");
+            return;
+        }
 
-        cart = [];
-        saveCart();
-        renderCart();
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+        const restaurantId = window.location.pathname.split("/")[2];
+        window.location.href = `/restaurants/${restaurantId}/checkout`;
     }
+
 
 
     renderCart();

@@ -40,6 +40,9 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 
+
+
+
     public enum Status {
         PENDING, PREPARING, IN_DELIVERY, COMPLETED, CANCELLED
     }
