@@ -119,3 +119,11 @@ body {
     box-shadow: 0 5px 20px rgba(255, 107, 53, 0.4);
     transform: translateY(-3px);
 }
+.error-message {
+    background-color: #ffe6e6;
+    color: #b00020;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-weight: 500;
+}

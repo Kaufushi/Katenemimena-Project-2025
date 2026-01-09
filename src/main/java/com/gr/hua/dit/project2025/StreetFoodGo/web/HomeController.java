@@ -15,7 +15,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "home"; // points to home.html in templates folder
+        return "home";
     }
 
 
@@ -27,8 +27,7 @@ public class HomeController {
 
     @GetMapping("/order-status")
     public String orderStatus()
-        { return "order_status"; } // points to order_status.html
-
+        { return "order_status"; }
     @GetMapping("/owner-menu")
     public String ownerMenu()
         { return "owner_menu"; }

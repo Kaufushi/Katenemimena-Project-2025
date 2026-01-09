@@ -125,12 +125,27 @@
             Total: <span id="cart-total">€0.00</span>
         </div>
 
+
         <!-- CHECKOUT -->
         <div sec:authorize="isAuthenticated()">
-            <button class="checkout-btn" onclick="checkout()">
-                Checkout
-            </button>
+
+            <!-- OPEN -->
+            <div th:if="${restaurant.open}">
+                <button class="checkout-btn" onclick="checkout()">
+                    Checkout
+                </button>
+            </div>
+
+            <!-- CLOSED -->
+            <div th:unless="${restaurant.open}" class="checkout-disabled">
+                <p>🚫 This restaurant is currently closed</p>
+                <button class="checkout-btn" disabled>
+                    Checkout
+                </button>
+            </div>
+
         </div>
+
 
 
         <div class="login-to-checkout" sec:authorize="isAnonymous()">

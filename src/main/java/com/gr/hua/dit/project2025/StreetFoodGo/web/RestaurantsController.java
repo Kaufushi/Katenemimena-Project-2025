@@ -9,6 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.util.List;
@@ -91,10 +92,67 @@ public class RestaurantsController {
         return "restaurants";
     }
 
-    // =========================
+    @GetMapping("/restaurants/new")
+    public String newRestaurantForm() {
+        return "newRestaurant";
+    }
+
+    @PostMapping("/restaurants/new")
+    public String createRestaurant(
+            @RequestParam String name,
+            @RequestParam String area,
+            @RequestParam String cuisine,
+            @RequestParam String imageUrl,
+            @RequestParam String email,
+            @RequestParam String telephone,
+            @AuthenticationPrincipal PersonDetails userDetails,
+            RedirectAttributes redirectAttributes
+    ) {
+
+        // Validate telephone
+        Long phone;
+        try {
+            phone = Long.parseLong(telephone);
+        } catch (NumberFormatException e) {
+            redirectAttributes.addFlashAttribute(
+                    "error",
+                    "Telephone must be a valid number"
+            );
+            return "redirect:/restaurants/new";
+        }
+
+        // Get logged-in user
+        Person owner = userDetails.getPerson();
+
+        // Create restaurant
+        Restaurant restaurant = new Restaurant();
+        restaurant.setName(name);
+        restaurant.setArea(area);
+        restaurant.setCuisine(cuisine);
+        restaurant.setImageUrl(imageUrl);
+        restaurant.setEmail(email);
+        restaurant.setTelephone(phone);
+        restaurant.setOwner(owner);
+
+        // Save
+        restaurantRepository.save(restaurant);
+
+        // Success message
+        redirectAttributes.addFlashAttribute(
+                "success",
+                "Restaurant added successfully!"
+        );
+
+        return "redirect:/restaurants";
+    }
+
+
+
+
+        // =========================
     // SINGLE RESTAURANT PAGE
     // =========================
-    @GetMapping("/restaurants/{id}")
+    @GetMapping("/restaurants/{id:\\d+}")
     public String viewRestaurant(
             @PathVariable Long id,
             Model model,
@@ -123,11 +181,13 @@ public class RestaurantsController {
         return "restaurant";
     }
 
+
     @GetMapping("/restaurants/{id}/checkout")
     public String viewCheckout(@PathVariable Long id, Model model) {
         model.addAttribute("restaurantId", id);
         return "checkout";
     }
+
 
 
 }
