@@ -2,7 +2,6 @@ package com.gr.hua.dit.project2025.StreetFoodGo.core.repository;
 
 import com.gr.hua.dit.project2025.StreetFoodGo.core.model.Order;
 import com.gr.hua.dit.project2025.StreetFoodGo.core.model.Person;
-import com.gr.hua.dit.project2025.StreetFoodGo.core.model.Restaurant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
