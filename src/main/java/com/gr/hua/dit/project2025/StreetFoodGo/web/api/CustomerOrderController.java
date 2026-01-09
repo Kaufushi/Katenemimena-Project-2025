@@ -1,4 +1,4 @@
-package com.gr.hua.dit.project2025.StreetFoodGo.web;
+package com.gr.hua.dit.project2025.StreetFoodGo.web.api;
 
 import com.gr.hua.dit.project2025.StreetFoodGo.core.model.Order;
 import com.gr.hua.dit.project2025.StreetFoodGo.core.repository.OrderRepository;

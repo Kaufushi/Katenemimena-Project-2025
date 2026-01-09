@@ -13,17 +13,6 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    // Find all orders placed by a specific customer
-    List<Order> findByCustomer(Person customer);
-
-    // Find all orders for a specific restaurant
-    List<Order> findByRestaurant(Restaurant restaurant);
-
-    // Find all orders by status
-    List<Order> findByStatus(Order.Status status);
-
-    // Optional: find orders by customer and status
-    List<Order> findByCustomerAndStatus(Person customer, Order.Status status);
 
     // Find orders by restaurant ID with eager fetching to avoid lazy loading issues
     @Query("SELECT o FROM Order o " +
