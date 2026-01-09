@@ -4,10 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
-//@RestController
-//public class Controller {
-//
-//}
+
 
 @RequestMapping
 @Controller
@@ -18,25 +15,7 @@ public class HomeController {
         return "home";
     }
 
-
-
-
-    @GetMapping("/menu")
-    public String menu()
-        { return "menu"; } // points to menu.html
-
-    @GetMapping("/order-status")
-    public String orderStatus()
-        { return "order_status"; }
-    @GetMapping("/owner-menu")
-    public String ownerMenu()
-        { return "owner_menu"; }
-
-    @GetMapping("/owner-orders")
-    public String ownerOrders()
-        { return "owner_orders"; }
-
     @GetMapping("/owner-dashboard")
     public String ownerDashboard()
-        { return "owner_dashboard"; }
+        { return "customerOrders"; }
 }

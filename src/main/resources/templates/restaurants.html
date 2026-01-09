@@ -1,58 +1,65 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurants - StreetFoodGo</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/restaurants.css}">
-    <link rel="stylesheet" th:href="@{/css/restaurant-form.css}">
 
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/restaurants.css}">
 </head>
 
 <body>
 
 <header class="navbar">
     <div class="container">
+
+        <!-- LOGO -->
         <div class="logo">
             <a th:href="@{/}" style="text-decoration:none; color:inherit;">
                 🍜 StreetFoodGo
             </a>
         </div>
 
-        <div>
-            <!-- LOGIN όταν anonymous -->
+        <!-- RIGHT SIDE -->
+        <div class="header-right">
+
+            <!-- MY ORDERS -->
+            <a class="nav-link"
+               sec:authorize="isAuthenticated()"
+               href="/customer/orders">
+                <i class="bi bi-bag-check"></i>
+                My Orders
+            </a>
+
+            <!-- LOGIN -->
             <a sec:authorize="isAnonymous()"
                th:href="@{/login}"
-               class="btn btn-outline">
+               class="btn">
                 Login
             </a>
 
-            <!-- LOGOUT όταν logged in -->
+            <!-- LOGOUT -->
             <form sec:authorize="isAuthenticated()"
                   th:action="@{/logout}"
                   method="post"
                   style="display:inline;">
-                <button type="submit" class="btn btn-outline">
+                <button type="submit" class="btn">
                     Logout
                 </button>
             </form>
         </div>
+
     </div>
 </header>
-
-<!-- OWNER ONLY BUTTON -->
-<div class="owner-actions"
-     sec:authorize="hasRole('OWNER')"
-     style="text-align:center; margin: 1rem;">
-    <a th:href="@{/restaurants/new}" class="btn btn-primary">
-        ➕ Add Restaurant
-    </a>
-</div>
 
 <h1 class="page-title">Discover Restaurants</h1>
 
@@ -86,9 +93,11 @@
 
         <div class="card-content">
             <div class="card-title" th:text="${r.name}">Restaurant Name</div>
+
             <div class="card-info">
                 📍 <span th:text="${r.area}">Area</span>
             </div>
+
             <div class="card-info">
                 🍽️ <span th:text="${r.cuisine}">Cuisine</span>
             </div>

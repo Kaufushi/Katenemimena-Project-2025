@@ -6,70 +6,120 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StreetFoodGo - Discover Local Street Food</title>
 
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.5rem;
+        }
+
+        .header-auth {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .header-auth .username {
+            display: block;
+            font-weight: 600;
+            color: #ff6b35;
+        }
+
+        .header-auth form {
+            margin: 0;
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- Navigation Header -->
 <header class="navbar">
     <div class="container">
+
+        <!-- Logo -->
         <div class="logo">
             <span class="logo-icon">🍜</span>
             <span class="logo-text">StreetFoodGo</span>
         </div>
 
-        <nav class="nav-buttons">
+        <!-- Right Side Navbar -->
+        <div class="header-right">
 
-            <!-- 🔸 If NOT logged in → show Login + Register -->
-            <div sec:authorize="isAnonymous()">
-                <button type="button" th:onclick="|window.location='@{/login}'|" class="btn btn-outline">Login</button>
-                <button type="button" th:onclick="|window.location='@{/register}'|" class="btn btn-primary">Register</button>
-            </div>
-
-            <!-- 🔸 If logged in → show Username + Logout -->
-            <div sec:authorize="isAuthenticated()" style="display: flex; align-items: center; gap: 1rem;">
-                <span style="color:#fff; font-weight:600;">
-                    Logged in as: <span sec:authentication="name"></span>
-                </span>
+            <!-- Logged-in users -->
+            <div sec:authorize="isAuthenticated()" class="header-auth">
+                <a class="nav-link" href="/customer/orders">
+                    <i class="bi bi-bag-check"></i>
+                    My Orders
+                </a>
 
                 <form th:action="@{/logout}" method="post">
                     <button type="submit" class="btn btn-outline">Logout</button>
                 </form>
             </div>
 
-        </nav>
+            <span sec:authorize="isAuthenticated()" class="username">
+                Logged in as: <span sec:authentication="name"></span>
+            </span>
+
+            <!-- Anonymous users -->
+            <div sec:authorize="isAnonymous()" class="nav-buttons">
+                <button type="button"
+                        th:onclick="|window.location='@{/login}'|"
+                        class="btn btn-outline">
+                    Login
+                </button>
+                <button type="button"
+                        th:onclick="|window.location='@{/register}'|"
+                        class="btn btn-primary">
+                    Register
+                </button>
+            </div>
+
+        </div>
     </div>
 </header>
 
-<!-- Hero Section -->
+<!-- Hero -->
 <main class="hero">
     <div class="hero-overlay"></div>
+
     <div class="hero-content">
         <h1 class="hero-title">Discover Amazing Street Food Near You</h1>
-        <p class="hero-subtitle">Explore the best local street food vendors and satisfy your cravings</p>
-        <button type="button" th:onclick="|window.location='@{/restaurants}'|" class="btn btn-hero">
+        <p class="hero-subtitle">
+            Explore the best local street food vendors and satisfy your cravings
+        </p>
+
+        <button type="button"
+                th:onclick="|window.location='@{/restaurants}'|"
+                class="btn btn-hero">
             <span>View Restaurants</span>
             <span class="btn-icon">→</span>
         </button>
     </div>
 
-    <!-- Feature Cards -->
     <div class="features">
         <div class="feature-card">
             <div class="feature-icon">📍</div>
             <h3>Local Vendors</h3>
             <p>Find authentic street food in your area</p>
         </div>
+
         <div class="feature-card">
             <div class="feature-icon">⭐</div>
             <h3>Top Rated</h3>
             <p>Browse reviews from food lovers</p>
         </div>
+
         <div class="feature-card">
             <div class="feature-icon">🚀</div>
             <h3>Quick Service</h3>
