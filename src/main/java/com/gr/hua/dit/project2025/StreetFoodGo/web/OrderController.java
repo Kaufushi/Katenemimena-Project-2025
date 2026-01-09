@@ -37,9 +37,6 @@ public class OrderController {
     public String placeOrder(
             @RequestParam Long restaurantId,
             @RequestParam String cartData,
-            @RequestParam(required = false) String street,
-            @RequestParam(required = false) String city,
-            @RequestParam(required = false) String notes,
             @AuthenticationPrincipal PersonDetails userDetails,
             RedirectAttributes redirectAttributes
     ) throws Exception {
@@ -54,7 +51,8 @@ public class OrderController {
 
         List<CartItemDTO> cartItems =
                 objectMapper.readValue(cartData,
-                        new TypeReference<List<CartItemDTO>>() {});
+                        new TypeReference<>() {
+                        });
 
         Order order = Order.builder()
                 .customer(customer)
