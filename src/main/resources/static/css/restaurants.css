@@ -1,3 +1,4 @@
+/* ===== BASE ===== */
 body {
     font-family: 'Poppins', sans-serif;
     background: #f7f7f7;
@@ -6,7 +7,7 @@ body {
     color: #333;
 }
 
-/* Header */
+/* ===== NAVBAR ===== */
 .navbar {
     background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(10px);
@@ -32,16 +33,52 @@ body {
     color: #ff6b35;
 }
 
-/* Page Title */
+/* ===== HEADER RIGHT ===== */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+/* ===== MY ORDERS LINK ===== */
+.header-right .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+
+    padding: 0.45rem 1.2rem;
+    border-radius: 30px;
+
+    background: white;
+    color: #ff6b35;
+
+    font-weight: 600;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+
+    transition: 0.3s ease;
+}
+
+.header-right .nav-link i {
+    font-size: 1.1rem;
+}
+
+.header-right .nav-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    background: #fff;
+    color: #f7931e;
+}
+
+/* ===== PAGE TITLE ===== */
 .page-title {
     text-align: center;
     margin: 2rem 0;
     font-size: 2.2rem;
     font-weight: 700;
-    color: #333;
 }
 
-/* Filters Section */
+/* ===== FILTERS ===== */
 .filters {
     display: flex;
     justify-content: center;
@@ -59,6 +96,7 @@ body {
     min-width: 200px;
 }
 
+/* ===== RESTAURANT GRID ===== */
 .restaurant-grid {
     max-width: 1200px;
     margin: 0 auto;
@@ -103,12 +141,13 @@ body {
     margin-bottom: 0.5rem;
 }
 
+/* ===== BUTTON ===== */
 .btn {
     display: inline-block;
     margin-top: 1rem;
     padding: 0.7rem 1.4rem;
     border-radius: 30px;
-    background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+    background: linear-gradient(135deg, #ff6b35, #f7931e);
     color: white;
     text-decoration: none;
     font-weight: 600;
@@ -118,12 +157,4 @@ body {
 .btn:hover {
     box-shadow: 0 5px 20px rgba(255, 107, 53, 0.4);
     transform: translateY(-3px);
-}
-.error-message {
-    background-color: #ffe6e6;
-    color: #b00020;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 16px;
-    font-weight: 500;
 }

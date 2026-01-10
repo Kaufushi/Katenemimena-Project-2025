@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
@@ -38,7 +39,7 @@
     <div class="checkout-card">
         <h3>📍 Delivery Address</h3>
 
-        <form th:action="@{/orders/place}" method="post">
+        <form th:action="@{/orders/place}" method="post" id="orderForm">
 
             <div class="form-group">
                 <label>Street</label>
@@ -57,13 +58,29 @@
             </div>
 
             <input type="hidden" name="cartData" id="cartData">
+            <input type="hidden" name="restaurantId" id="restaurantId">
 
             <div class="checkout-actions">
-                <a th:href="@{/restaurants}" class="btn-secondary">Back</a>
+                <button type="button" class="btn-secondary" onclick="goBack()">Back</button>
                 <button type="submit" class="btn-primary">Place Order</button>
             </div>
 
         </form>
+    </div>
+
+    <!-- PAYMENT METHOD -->
+    <div class="checkout-card">
+        <h3>💰 Payment Method</h3>
+        <div class="payment-method">
+            <div class="payment-option selected">
+                <span class="payment-icon">💵</span>
+                <div class="payment-details">
+                    <strong>Cash on Delivery</strong>
+                    <p>Pay with cash when your order arrives</p>
+                </div>
+                <span class="selected-badge">✓ Selected</span>
+            </div>
+        </div>
     </div>
 
     <!-- ORDER SUMMARY -->
@@ -81,11 +98,32 @@
 </main>
 
 <script>
+    // Extract restaurant ID from URL: /restaurants/11/checkout
+    function getRestaurantIdFromUrl() {
+        const path = window.location.pathname;
+        const match = path.match(/\/restaurants\/(\d+)\/checkout/);
+        return match ? match[1] : null;
+    }
+
+    const restaurantId = getRestaurantIdFromUrl();
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
     const cartDiv = document.getElementById("checkout-cart");
     const totalSpan = document.getElementById("checkout-total");
     const cartInput = document.getElementById("cartData");
+    const restaurantIdInput = document.getElementById("restaurantId");
+
+    // Check if cart is empty
+    if (cart.length === 0) {
+        alert("Your cart is empty!");
+        window.location.href = '/restaurants';
+    }
+
+    // Check if restaurant ID exists
+    if (!restaurantId) {
+        alert("Restaurant not found!");
+        window.location.href = '/restaurants';
+    }
 
     let total = 0;
 
@@ -102,8 +140,38 @@
     });
 
     totalSpan.innerText = total.toFixed(2);
-    cartInput.value = JSON.stringify(cart);
+
+    // Prepare cart data for submission
+    const cartForSubmission = cart.map(item => ({
+        name: item.name,
+        quantity: item.quantity
+    }));
+
+    cartInput.value = JSON.stringify(cartForSubmission);
+    restaurantIdInput.value = restaurantId;
+
+    // Handle form submission
+    document.getElementById('orderForm').addEventListener('submit', function(e) {
+        if (!restaurantId) {
+            e.preventDefault();
+            alert('Restaurant ID is missing. Please try again.');
+            return;
+        }
+
+        // Clear cart after successful submission
+        localStorage.removeItem('cart');
+    });
+
+    function goBack() {
+        if (restaurantId) {
+            window.location.href = '/restaurants/' + restaurantId;
+        } else {
+            window.location.href = '/restaurants';
+        }
+    }
 </script>
+
+
 
 </body>
 </html>

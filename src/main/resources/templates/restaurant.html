@@ -1,34 +1,50 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <title th:text="${restaurant.name}">Restaurant</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- CSS -->
     <link rel="stylesheet" th:href="@{/css/singleRestaurant.css}">
 </head>
 
 <body>
 
-<!-- HEADER -->
+<!-- ===== HEADER ===== -->
 <header class="restaurant-header">
     <div class="header-inner">
+
         <div class="header-left">
             <span class="logo-icon">🍜</span>
-            <a th:href="@{/}" class="logo" style="text-decoration:none; color:inherit;">
-                StreetFoodGo
-            </a>
+            <a th:href="@{/}" class="logo">StreetFoodGo</a>
         </div>
 
         <div class="header-right">
 
-            <!-- LOGIN (anonymous) -->
+            <a class="nav-link"
+               sec:authorize="isAuthenticated()"
+               href="/customer/orders">
+                <i class="bi bi-bag-check"></i>
+                My Orders
+            </a>
+
             <a sec:authorize="isAnonymous()"
                th:href="@{/login}"
                class="header-btn">
                 Login
             </a>
 
-            <!-- LOGOUT (authenticated) -->
             <form sec:authorize="isAuthenticated()"
                   th:action="@{/logout}"
                   method="post">
@@ -41,39 +57,55 @@
     </div>
 </header>
 
+<!-- ===== ALERTS ===== -->
+<div th:if="${success}" class="alert alert-success">
+    <span class="alert-icon">✓</span>
+    <span th:text="${success}"></span>
+</div>
+
+<div th:if="${error}" class="alert alert-error">
+    <span class="alert-icon">✗</span>
+    <span th:text="${error}"></span>
+</div>
+
 <h2 class="restaurant-title" th:text="${restaurant.name}">
     Restaurant Name
 </h2>
 
 <main class="restaurant-container">
 
-    <!-- RESTAURANT INFO -->
+    <!-- ===== INFO CARD ===== -->
     <section class="restaurant-card">
-        <div class="restaurant-info">
-            <p class="restaurant-meta">
-                📍 <span th:text="${restaurant.area}"></span>
-            </p>
+        <p class="restaurant-meta">
+            📍 <span th:text="${restaurant.area}"></span>
+        </p>
 
-            <p class="restaurant-meta">
-                🍽️ <span th:text="${restaurant.cuisine}"></span>
-            </p>
+        <p class="restaurant-meta">
+            🍽️ <span th:text="${restaurant.cuisine}"></span>
+        </p>
 
-            <p class="restaurant-status"
-               th:text="${restaurant.open ? 'Open now' : 'Closed'}"
-               th:classappend="${restaurant.open ? 'open' : 'closed'}">
-            </p>
+        <p class="restaurant-status"
+           th:text="${restaurant.open ? 'Open now' : 'Closed'}"
+           th:classappend="${restaurant.open ? 'open' : 'closed'}">
+        </p>
 
-            <!-- OWNER ONLY -->
-            <div sec:authorize="hasRole('OWNER')" th:if="${isOwner}">
+        <!-- OWNER ONLY -->
+        <div sec:authorize="hasRole('OWNER')" th:if="${isOwner}">
+            <div class="owner-actions">
                 <a th:href="@{/owner/restaurants/{id}/manage(id=${restaurant.id})}"
                    class="manage-btn">
                     ⚙️ Manage Restaurant
+                </a>
+
+                <a th:href="@{/owner/restaurants/{id}/orders(id=${restaurant.id})}"
+                   class="orders-btn">
+                    📋 View Orders
                 </a>
             </div>
         </div>
     </section>
 
-
+    <!-- ===== MENU ===== -->
     <section class="menu-section">
         <h3 class="menu-title">Menu</h3>
 
@@ -82,26 +114,20 @@
         </div>
 
         <div class="menu-grid">
-            <div class="menu-item"
-                 th:each="item : ${menuItems}">
+            <div class="menu-item" th:each="item : ${menuItems}">
 
                 <div class="menu-item-header">
-                    <h4 th:text="${item.name}">Item Name</h4>
-                    <span class="price">
-                    €<span th:text="${item.price}"></span>
-                </span>
+                    <h4 th:text="${item.name}">Item</h4>
+                    <span class="price">€<span th:text="${item.price}"></span></span>
                 </div>
 
-                <p class="menu-desc"
-                   th:text="${item.description}">
-                </p>
+                <p class="menu-desc" th:text="${item.description}"></p>
 
                 <span class="availability"
                       th:text="${item.available ? 'Available' : 'Unavailable'}"
                       th:classappend="${item.available ? 'available' : 'unavailable'}">
-            </span>
+                </span>
 
-                <!-- ADD TO CART -->
                 <div class="menu-actions">
                     <button class="add-btn"
                             th:disabled="${!item.available}"
@@ -114,6 +140,7 @@
         </div>
     </section>
 
+    <!-- ===== CART ===== -->
     <div class="cart">
         <h3>🛒 Cart</h3>
 
@@ -122,60 +149,41 @@
         </div>
 
         <div class="cart-total">
-            Total: <span id="cart-total">€0.00</span>
+            Total: €<span id="cart-total">0.00</span>
         </div>
 
-
-        <!-- CHECKOUT -->
         <div sec:authorize="isAuthenticated()">
 
-            <!-- OPEN -->
             <div th:if="${restaurant.open}">
-                <button class="checkout-btn" onclick="checkout()">
-                    Checkout
-                </button>
+                <button class="checkout-btn" onclick="checkout()">Checkout</button>
             </div>
 
-            <!-- CLOSED -->
             <div th:unless="${restaurant.open}" class="checkout-disabled">
                 <p>🚫 This restaurant is currently closed</p>
-                <button class="checkout-btn" disabled>
-                    Checkout
-                </button>
+                <button class="checkout-btn" disabled>Checkout</button>
             </div>
 
         </div>
-
-
 
         <div class="login-to-checkout" sec:authorize="isAnonymous()">
             <p>Login to complete your order</p>
             <a th:href="@{/login}" class="login-btn">Login</a>
         </div>
-
     </div>
-
-
 
 </main>
 
 <script>
-
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
     function saveCart() {
         localStorage.setItem("cart", JSON.stringify(cart));
     }
 
-
     function addToCart(name, price) {
         const existing = cart.find(i => i.name === name);
-
-        if (existing) {
-            existing.quantity++;
-        } else {
-            cart.push({ name, price, quantity: 1 });
-        }
+        if (existing) existing.quantity++;
+        else cart.push({ name, price, quantity: 1 });
 
         saveCart();
         renderCart();
@@ -183,57 +191,43 @@
 
     function removeFromCart(name) {
         const index = cart.findIndex(i => i.name === name);
-
         if (index === -1) return;
 
-        if (cart[index].quantity > 1) {
-            cart[index].quantity--;
-        } else {
-            cart.splice(index, 1);
-        }
+        if (cart[index].quantity > 1) cart[index].quantity--;
+        else cart.splice(index, 1);
 
         saveCart();
         renderCart();
     }
 
-
     function renderCart() {
-        const cartItemsDiv = document.getElementById("cart-items");
-        const cartTotalSpan = document.getElementById("cart-total");
+        const cartItems = document.getElementById("cart-items");
+        const cartTotal = document.getElementById("cart-total");
 
-        cartItemsDiv.innerHTML = "";
-
+        cartItems.innerHTML = "";
         if (cart.length === 0) {
-            cartItemsDiv.innerHTML = "<p>No items yet</p>";
-            cartTotalSpan.innerText = "0.00";
+            cartItems.innerHTML = "<p>No items yet</p>";
+            cartTotal.innerText = "0.00";
             return;
         }
 
         let total = 0;
-
         cart.forEach(item => {
             total += item.price * item.quantity;
-
-            cartItemsDiv.innerHTML += `
+            cartItems.innerHTML += `
                 <div class="cart-item">
-                    <span class="cart-name">${item.name}</span>
-
+                    <span>${item.name}</span>
                     <div class="cart-controls">
                         <button onclick="removeFromCart('${item.name}')">−</button>
-                        <span class="cart-qty">${item.quantity}</span>
+                        <span>${item.quantity}</span>
                         <button onclick="addToCart('${item.name}', ${item.price})">+</button>
                     </div>
-
-                    <span class="cart-price">
-                        €${(item.price * item.quantity).toFixed(2)}
-                    </span>
-                </div>
-            `;
+                    <span>€${(item.price * item.quantity).toFixed(2)}</span>
+                </div>`;
         });
 
-        cartTotalSpan.innerText = total.toFixed(2);
+        cartTotal.innerText = total.toFixed(2);
     }
-
 
     function checkout() {
         if (cart.length === 0) {
@@ -241,18 +235,12 @@
             return;
         }
 
-        localStorage.setItem("cart", JSON.stringify(cart));
-
         const restaurantId = window.location.pathname.split("/")[2];
         window.location.href = `/restaurants/${restaurantId}/checkout`;
     }
 
-
-
     renderCart();
 </script>
-
-
 
 </body>
 </html>

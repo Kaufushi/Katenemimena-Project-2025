@@ -1,6 +1,5 @@
 package com.gr.hua.dit.project2025.StreetFoodGo.web;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gr.hua.dit.project2025.StreetFoodGo.core.model.*;
 import com.gr.hua.dit.project2025.StreetFoodGo.core.repository.MenuItemRepository;
@@ -16,8 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fasterxml.jackson.core.type.TypeReference;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +37,8 @@ public class OrderController {
     public String placeOrder(
             @RequestParam Long restaurantId,
             @RequestParam String cartData,
-            @AuthenticationPrincipal PersonDetails userDetails
+            @AuthenticationPrincipal PersonDetails userDetails,
+            RedirectAttributes redirectAttributes
     ) throws Exception {
 
         Person customer = personRepository
@@ -51,7 +51,8 @@ public class OrderController {
 
         List<CartItemDTO> cartItems =
                 objectMapper.readValue(cartData,
-                        new TypeReference<List<CartItemDTO>>() {});
+                        new TypeReference<>() {
+                        });
 
         Order order = Order.builder()
                 .customer(customer)
@@ -84,6 +85,10 @@ public class OrderController {
 
         orderRepository.save(order);
 
-        return "redirect:/orders/success";
+        // Add success message
+        redirectAttributes.addFlashAttribute("success", "Order placed successfully! Order #" + order.getId());
+
+        // Redirect back to the restaurant page
+        return "redirect:/restaurants/" + restaurantId;
     }
 }

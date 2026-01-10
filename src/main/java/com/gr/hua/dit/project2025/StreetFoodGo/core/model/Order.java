@@ -34,14 +34,11 @@ public class Order {
     @JoinColumn(name = "store_id")
     private Restaurant restaurant;
 
-    private double TotalPrice;
+    private double totalPrice;
 
     // Items in the order
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
-
-
-
 
     public enum Status {
         PENDING, PREPARING, IN_DELIVERY, COMPLETED, CANCELLED

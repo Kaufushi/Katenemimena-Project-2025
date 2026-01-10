@@ -1,9 +1,12 @@
 package com.gr.hua.dit.project2025.StreetFoodGo.web;
 
 import com.gr.hua.dit.project2025.StreetFoodGo.core.model.MenuItem;
+import com.gr.hua.dit.project2025.StreetFoodGo.core.model.Order;
 import com.gr.hua.dit.project2025.StreetFoodGo.core.model.Restaurant;
 import com.gr.hua.dit.project2025.StreetFoodGo.core.repository.MenuItemRepository;
+import com.gr.hua.dit.project2025.StreetFoodGo.core.repository.OrderRepository;
 import com.gr.hua.dit.project2025.StreetFoodGo.core.repository.RestaurantRepository;
+import com.gr.hua.dit.project2025.StreetFoodGo.security.PersonDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,18 +14,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/owner")
 public class OwnerRestaurantController {
 
+    private final OrderRepository orderRepository;
     private final RestaurantRepository restaurantRepository;
     private final MenuItemRepository menuItemRepository;
 
     public OwnerRestaurantController(RestaurantRepository restaurantRepository,
-                                     MenuItemRepository menuItemRepository) {
+                                     MenuItemRepository menuItemRepository,
+                                     OrderRepository orderRepository) {
         this.restaurantRepository = restaurantRepository;
         this.menuItemRepository = menuItemRepository;
+        this.orderRepository = orderRepository;
     }
 
     // =========================
@@ -126,5 +136,63 @@ public class OwnerRestaurantController {
 
         restaurantRepository.deleteById(id);
         return "redirect:/restaurants";
+    }
+
+    // =========================
+    // VIEW RESTAURANT ORDERS
+    // =========================
+    @GetMapping("/restaurants/{id}/orders")
+    public String viewOrders(
+            @PathVariable Long id,
+            @AuthenticationPrincipal PersonDetails userDetails,
+            Model model,
+            RedirectAttributes redirectAttributes
+    ) {
+        Restaurant restaurant = restaurantRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+
+        // Check if the logged-in user is the owner
+        if (!restaurant.getOwner().getId().equals(userDetails.getPerson().getId())) {
+            redirectAttributes.addFlashAttribute("error", "You are not authorized to view these orders");
+            return "redirect:/restaurants/" + id;
+        }
+
+        // Get all orders for this restaurant
+        List<Order> orders = orderRepository.findByRestaurantId(id);
+
+        model.addAttribute("restaurant", restaurant);
+        model.addAttribute("orders", orders);
+
+        return "ownerOrders";
+    }
+
+    // =========================
+    // UPDATE ORDER STATUS
+    // =========================
+    @PostMapping("/restaurants/{restaurantId}/orders/{orderId}/status")
+    public String updateOrderStatus(
+            @PathVariable Long restaurantId,
+            @PathVariable Long orderId,
+            @RequestParam Order.Status status,
+            @AuthenticationPrincipal PersonDetails userDetails,
+            RedirectAttributes redirectAttributes
+    ) {
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+
+        // Check if the logged-in user is the owner
+        if (!restaurant.getOwner().getId().equals(userDetails.getPerson().getId())) {
+            redirectAttributes.addFlashAttribute("error", "Unauthorized");
+            return "redirect:/restaurants/" + restaurantId;
+        }
+
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        order.setStatus(status);
+        orderRepository.save(order);
+
+        redirectAttributes.addFlashAttribute("success", "Order status updated successfully");
+        return "redirect:/owner/restaurants/" + restaurantId + "/orders";
     }
 }
