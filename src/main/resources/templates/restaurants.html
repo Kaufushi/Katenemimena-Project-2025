@@ -87,8 +87,17 @@
 
     <button class="btn" type="submit">Filter</button>
 </form>
+<div class="owner-actions"
+     sec:authorize="hasRole('OWNER')"
+     style="text-align: center; margin: 1rem;">
 
-<div class="restaurant-grid">
+    <a th:href="@{/restaurants/new}" class="btn btn-primary">
+        ➕ Add Restaurant
+    </a>
+
+</div>
+
+    <div class="restaurant-grid">
     <div class="card" th:each="r : ${restaurants}">
         <img th:src="${r.imageUrl}" alt="Restaurant Image">
 

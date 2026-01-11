@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -18,14 +19,14 @@ public class SecurityConfig {
 
     private final PersonDetailsService personDetailsService;
     private final JwtAuthenticationFilter jwtFilter;
-    private final PasswordEncoder passwordEncoder;
+
 
     public SecurityConfig(PersonDetailsService personDetailsService,
-                          JwtAuthenticationFilter jwtFilter,
-                          PasswordEncoder passwordEncoder) {
+                          JwtAuthenticationFilter jwtFilter
+                          ) {
         this.personDetailsService = personDetailsService;
         this.jwtFilter = jwtFilter;
-        this.passwordEncoder = passwordEncoder;
+
     }
 
     // -----------------------
@@ -36,7 +37,7 @@ public class SecurityConfig {
     public SecurityFilterChain apiChain(HttpSecurity http) throws Exception {
         http
                 .securityMatcher("/api/**")
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/notifications/**").permitAll()
@@ -72,6 +73,17 @@ public class SecurityConfig {
                         ).hasRole("OWNER")
                         .requestMatchers("/restaurants/*/checkout").authenticated()
                         .anyRequest().authenticated()
+                )
+                .sessionManagement(sess -> sess
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                )
+                .rememberMe(remember -> remember
+                        .key("kalhspera-easter-egg")
+                        .rememberMeParameter("remember-me")
+                        .rememberMeCookieName("streetfoodgo-remember-me")
+                        .tokenValiditySeconds(7 * 24 * 60 * 60)
+                        .userDetailsService(personDetailsService)
+                        .useSecureCookie(false)
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
