@@ -32,4 +32,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "WHERE o.customer = :customer " +
             "ORDER BY o.createdAt DESC")
     List<Order> findByCustomerOrderByCreatedAtDesc(@Param("customer") Person customer);
+    List<Order> findByStatusIn(List<Order.Status> statuses);
+
+
 }

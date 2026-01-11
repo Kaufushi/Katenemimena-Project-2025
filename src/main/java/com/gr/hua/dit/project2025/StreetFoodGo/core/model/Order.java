@@ -21,6 +21,8 @@ public class Order {
 
     private Instant createdAt = Instant.now();
 
+    private Instant statusUpdatedAt = Instant.now();
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
