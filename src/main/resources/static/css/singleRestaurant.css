@@ -18,6 +18,7 @@ body {
     justify-content: space-between;
     align-items: center;
     color: white;
+    flex-wrap: wrap;
 }
 
 .header-left {
@@ -40,16 +41,15 @@ body {
 .header-right {
     display: flex;
     gap: 0.6rem;
+    align-items: center;
 }
 
 /* Header buttons */
-
 .header-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.3rem;
-
     padding: 0.45rem 1.2rem;
     border-radius: 30px;
     background: white;
@@ -66,7 +66,6 @@ body {
     box-shadow: 0 6px 18px rgba(0,0,0,0.2);
 }
 
-
 .logout-btn {
     background: transparent;
     color: white;
@@ -77,6 +76,7 @@ body {
     background: white;
     color: #ff6b35;
 }
+
 .login-to-checkout .login-btn {
     display: inline-flex;
     align-items: center;
@@ -201,11 +201,12 @@ body {
     position: fixed;
     right: 1.5rem;
     top: 6rem;
-    width: 280px;
+    width: 320px;
     background: white;
     border-radius: 20px;
     padding: 1.5rem;
     box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    z-index: 999;
 }
 
 .cart-controls button {
@@ -226,4 +227,137 @@ body {
     border: none;
     color: white;
     font-weight: 600;
+}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 768px) {
+
+    /* Body padding */
+    .restaurant-container {
+        padding: 0 1rem 3rem;
+    }
+
+
+    .header-inner {
+        gap: 0.8rem;
+    }
+
+    .header-left {
+        flex: 1;
+        min-width: 150px;
+    }
+
+    .logo {
+        font-size: 1.3rem;
+    }
+
+    .logo-icon {
+        font-size: 1.6rem;
+    }
+
+    .header-right {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: flex-end;
+    }
+
+
+    .header-btn, .logout-btn, .header-right .nav-link {
+        padding: 0.4rem 0.9rem;
+        font-size: 0.85rem;
+        white-space: nowrap;
+    }
+
+    /* Restaurant title */
+    .restaurant-title {
+        font-size: 1.8rem;
+        margin: 1.5rem 0;
+    }
+
+    /* Cards */
+    .restaurant-card {
+        padding: 1.2rem;
+    }
+
+    /* Menu grid */
+    .menu-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .menu-item {
+        padding: 1rem;
+    }
+
+
+    .cart {
+        position: static;
+        width: calc(100% - 2rem);
+        margin: 2rem auto;
+        border-radius: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    #cart-items {
+        max-height: none;
+    }
+
+    .cart-controls button {
+        width: 24px;
+        height: 24px;
+        font-size: 0.9rem;
+    }
+
+    .checkout-btn {
+        padding: 0.65rem;
+        font-size: 0.95rem;
+    }
+
+    .login-to-checkout .login-btn {
+        width: 100%;
+        padding: 0.65rem;
+        font-size: 0.95rem;
+    }
+
+    /* Alerts */
+    .alert {
+        margin: 0.8rem 1rem;
+        padding: 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    /* Owner buttons */
+    .owner-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .manage-btn, .orders-btn {
+        width: 100%;
+        text-align: center;
+        padding: 0.6rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+    .header-inner {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .header-left {
+        justify-content: center;
+    }
+
+    .header-right {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .header-btn, .logout-btn, .header-right .nav-link {
+        flex: 1;
+        min-width: fit-content;
+    }
 }
